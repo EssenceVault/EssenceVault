@@ -20,6 +20,16 @@
       background-color: #ffffff;
       color: #000000;
       min-height: 100vh;
+      animation: pageFadeIn 0.45s ease-out;
+    }
+
+    @keyframes pageFadeIn {
+      from {
+        opacity: 0.15;
+      }
+      to {
+        opacity: 1;
+      }
     }
 
     .topbar {
@@ -64,18 +74,7 @@
       grid-template-columns: 1fr 1.2fr;
       gap: 28px;
       align-items: center;
-      animation: popFromBottom 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-
-    @keyframes popFromBottom {
-      from {
-        opacity: 0;
-        transform: translateY(45px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      animation: pageFadeIn 0.45s ease-out;
     }
 
     .image-placeholder {
@@ -153,23 +152,24 @@
       background-color: #008f35;
     }
 
-    /* Pop-up inferior de confirmación */
+    /* Pop-up fade in */
     .bottom-popup {
       position: fixed;
       bottom: 18px;
       left: 50%;
-      transform: translate(-50%, 150%);
+      transform: translateX(-50%);
       background: #ffffff;
       border: 4px solid #000000;
       border-radius: 14px;
       padding: 12px 20px;
       font-weight: 700;
       z-index: 100;
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      display: none;
     }
 
     .bottom-popup.open {
-      transform: translate(-50%, 0);
+      display: block;
+      animation: pageFadeIn 0.25s ease-out;
     }
 
     @media (max-width: 640px) {
