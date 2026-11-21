@@ -20,6 +20,16 @@
       background-color: #ffffff;
       color: #000000;
       min-height: 100vh;
+      animation: pageFadeIn 0.45s ease-out;
+    }
+
+    @keyframes pageFadeIn {
+      from {
+        opacity: 0.15;
+      }
+      to {
+        opacity: 1;
+      }
     }
 
     /* Barra superior */
@@ -130,3 +140,323 @@
       font-family: "Montserrat", sans-serif;
       font-size: 1.05rem;
       font-weight: 600;
+      margin-bottom: 10px;
+      padding-left: 2px;
+    }
+
+    .products-panel {
+      background-color: #bdbdbd;
+      border: 4px solid #000000;
+      border-top-left-radius: 75px;
+      border-top-right-radius: 75px;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      padding: 34px 36px 26px;
+      min-height: 280px;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 26px 32px;
+      align-items: start;
+    }
+
+    .product-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #000000;
+      cursor: pointer;
+      animation: pageFadeIn 0.45s ease-out;
+    }
+
+    .product-box {
+      width: 100%;
+      max-width: 145px;
+      aspect-ratio: 1 / 1;
+      background-color: #ffffff;
+      border: 4px solid #000000;
+      border-radius: 26px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      overflow: hidden;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .product-card:hover .product-box {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 0 #000000;
+    }
+
+    .product-label {
+      margin-top: 8px;
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #000000;
+      text-align: center;
+    }
+
+    .product-link-hint {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #222222;
+      margin-top: 2px;
+    }
+
+    /* Pop-up fade in */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+      animation: pageFadeIn 0.25s ease-out;
+    }
+
+    .modal-box {
+      background: #ffffff;
+      border: 4px solid #000000;
+      border-radius: 20px;
+      max-width: 440px;
+      width: 100%;
+      padding: 20px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #000000;
+      padding-bottom: 8px;
+    }
+
+    .close-btn {
+      background: #000000;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .action-btn {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      margin-top: 14px;
+      width: 100%;
+      background: #00a63e;
+      color: #ffffff;
+      border: 2.5px solid #000000;
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Toast fade in */
+    .bottom-toast {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #000000;
+      color: #ffffff;
+      border: 3px solid #00a63e;
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      z-index: 120;
+      display: none;
+      white-space: nowrap;
+    }
+
+    .bottom-toast.show {
+      display: block;
+      animation: pageFadeIn 0.3s ease-out;
+    }
+
+    @media (max-width: 860px) {
+      .products-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .products-panel {
+        border-top-left-radius: 40px;
+        border-top-right-radius: 40px;
+        padding: 24px 18px;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .topbar {
+        flex-wrap: wrap;
+      }
+      .search-wrap {
+        order: 3;
+        max-width: 100%;
+        flex-basis: 100%;
+      }
+      .products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="index.html" class="brand">Essence Vault</a>
+
+    <div class="search-wrap">
+      <input
+        id="searchInput"
+        type="text"
+        class="search-input"
+        placeholder="Buscar algo..."
+        aria-label="Buscar algo"
+      />
+    </div>
+
+    <div class="top-actions">
+      <button id="ordersBtn" type="button" class="orders-btn">Mis pedidos</button>
+      <button id="profileBtn" type="button" class="profile-circle" aria-label="Perfil"></button>
+    </div>
+  </header>
+
+  <section class="announcement-banner" aria-label="Anuncio">
+    <h1 class="announcement-text">(ANUNCIO)</h1>
+  </section>
+
+  <main class="featured-section">
+    <h2 class="section-title">Productos Destacados</h2>
+
+    <div class="products-panel">
+      <div id="productsGrid" class="products-grid"></div>
+    </div>
+  </main>
+
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div class="modal-header">
+        <strong id="modalTitle">Información</strong>
+        <button id="closeModalBtn" type="button" class="close-btn">X</button>
+      </div>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <div id="bottomToast" class="bottom-toast">
+    Nuevo lanzamiento: Camisa Essential disponible
+  </div>
+
+  <script>
+    const products = [
+      {
+        id: 1,
+        name: "Camisa Essential",
+        price: 599,
+        description: "Camisa de corte relajado edición Essence Vault."
+      }
+    ];
+
+    const productsGrid = document.getElementById("productsGrid");
+    const searchInput = document.getElementById("searchInput");
+    const ordersBtn = document.getElementById("ordersBtn");
+    const profileBtn = document.getElementById("profileBtn");
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalContent = document.getElementById("modalContent");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const bottomToast = document.getElementById("bottomToast");
+
+    function renderProducts(filterText = "") {
+      const query = filterText.trim().toLowerCase();
+      const filtered = products.filter(
+        (item) =>
+          item.name.toLowerCase().includes(query) ||
+          item.description.toLowerCase().includes(query)
+      );
+
+      if (filtered.length === 0) {
+        productsGrid.innerHTML = `<p style="grid-column: 1 / -1;">No se encontraron productos.</p>`;
+        return;
+      }
+
+      productsGrid.innerHTML = filtered
+        .map(
+          (item) => `
+          <a href="producto.html?id=${item.id}" class="product-card" data-id="${item.id}">
+            <div class="product-box">
+              <svg width="62" height="62" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
+              </svg>
+            </div>
+            <span class="product-label">${item.name}</span>
+            <span class="product-link-hint">$${item.price} MXN</span>
+          </a>
+        `
+        )
+        .join("");
+    }
+
+    function openPopup(title, html) {
+      modalTitle.textContent = title;
+      modalContent.innerHTML = html;
+      modalBackdrop.classList.add("open");
+    }
+
+    function closePopup() {
+      modalBackdrop.classList.remove("open");
+    }
+
+    ordersBtn.addEventListener("click", () => {
+      const savedOrders = JSON.parse(localStorage.getItem("essence_orders") || "[]");
+
+      if (savedOrders.length === 0) {
+        openPopup(
+          "Mis pedidos",
+          `
+          <p>Aún no tienes prendas en tus pedidos.</p>
+          <a href="producto.html?id=1" class="action-btn">Ver Camisa Essential</a>
+          `
+        );
+        return;
+      }
+
+      const listHtml = savedOrders
+        .map((o, idx) => `<li>#${idx + 1} - ${o.name} (Talla ${o.size}) - $${o.price} MXN</li>`)
+        .join("");
+
+      openPopup(
+        "Mis pedidos",
+        `<ul style="padding-left: 18px; line-height: 1.6;">${listHtml}</ul>`
+      );
+    });
+
+    profileBtn.addEventListener("click", () => {
+      openPopup(
+        "Cuenta Essence Vault",
+        "<p>Bienvenido a Essence Vault. Explora nuestra Camisa Essential.</p>"
+      );
+    });
+
+    searchInput.addEventListener("input", (e
