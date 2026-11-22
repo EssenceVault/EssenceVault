@@ -3,25 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Essence Vault — Streetwear & Essentials</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <title>Essence Vault — Streetwear &amp; Essentials</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: "Montserrat", -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    html, body {
-      background-color: #f8f9fa;
+    body {
+      background-color: #f4f5f7;
       color: #111827;
       min-height: 100vh;
+      opacity: 1;
+      transition: opacity 0.4s ease;
     }
 
-    /* Barra superior moderna */
+    /* Barra superior */
     .topbar {
       position: sticky;
       top: 0;
@@ -33,12 +34,12 @@
       align-items: center;
       justify-content: space-between;
       gap: 20px;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
     }
 
     .brand {
       color: #111827;
-      font-size: 1.35rem;
+      font-size: 1.3rem;
       font-weight: 800;
       letter-spacing: 0.6px;
       text-transform: uppercase;
@@ -54,12 +55,12 @@
       height: 10px;
       border-radius: 50%;
       background-color: #10b981;
+      display: inline-block;
     }
 
     .search-wrap {
       flex: 1;
       max-width: 420px;
-      position: relative;
     }
 
     .search-input {
@@ -68,7 +69,7 @@
       background-color: #f3f4f6;
       border: 1.5px solid #e5e7eb;
       border-radius: 999px;
-      padding: 0 16px 0 38px;
+      padding: 0 16px;
       font-size: 0.88rem;
       font-weight: 500;
       color: #111827;
@@ -78,22 +79,12 @@
     .search-input:focus {
       background-color: #ffffff;
       border-color: #10b981;
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 13px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #6b7280;
-      pointer-events: none;
     }
 
     .top-actions {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
 
     .orders-btn {
@@ -109,7 +100,6 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
     }
 
     .orders-btn:hover {
@@ -132,18 +122,17 @@
       border: none;
       border-radius: 50%;
       color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
       cursor: pointer;
       flex-shrink: 0;
     }
 
-    /* Banner principal (Anuncio + Contador) */
+    /* Banner de Anuncio + Contador */
     .hero-banner {
       background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
       color: #ffffff;
-      padding: 48px 24px;
+      padding: 48px 20px;
       text-align: center;
     }
 
@@ -159,5 +148,403 @@
       color: #34d399;
       padding: 6px 14px;
       border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 70
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .announcement-title {
+      font-size: 3rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .hero-subtitle {
+      color: #d1d5db;
+      font-size: 0.96rem;
+      font-weight: 500;
+      max-width: 540px;
+      margin: 0 auto 24px;
+    }
+
+    .countdown-box {
+      display: inline-block;
+      background-color: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      padding: 14px 22px;
+    }
+
+    .countdown-text {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .countdown-text span {
+      color: #34d399;
+      font-weight: 800;
+    }
+
+    /* Productos Destacados */
+    .featured-section {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 36px 20px 60px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #111827;
+    }
+
+    .section-tag {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #6b7280;
+    }
+
+    .products-panel {
+      background-color: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 24px;
+    }
+
+    .product-card {
+      background-color: #f9fafb;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 16px;
+      text-decoration: none;
+      color: #111827;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      border-color: #10b981;
+      background-color: #ffffff;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .product-visual {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      border-radius: 12px;
+      background-color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .badge-new {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #111827;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
+
+    .product-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .product-desc {
+      font-size: 0.83rem;
+      color: #6b7280;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    .product-footer {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .product-price {
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: #059669;
+    }
+
+    .product-cta {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #111827;
+      background-color: #e5e7eb;
+      padding: 6px 12px;
+      border-radius: 999px;
+    }
+
+    .product-card:hover .product-cta {
+      background-color: #10b981;
+      color: #ffffff;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(17, 24, 39, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background-color: #ffffff;
+      color: #111827;
+      border-radius: 20px;
+      max-width: 430px;
+      width: 100%;
+      padding: 22px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .close-btn {
+      background-color: #f3f4f6;
+      color: #111827;
+      border: none;
+      border-radius: 8px;
+      width: 30px;
+      height: 30px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .action-btn {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      margin-top: 16px;
+      width: 100%;
+      background-color: #10b981;
+      color: #ffffff;
+      border-radius: 12px;
+      padding: 11px 14px;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 640px) {
+      .topbar {
+        flex-wrap: wrap;
+        padding: 12px 16px;
+      }
+      .search-wrap {
+        order: 3;
+        max-width: 100%;
+        flex-basis: 100%;
+      }
+      .announcement-title {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="index.html" class="brand">
+      <span class="brand-dot"></span>
+      Essence Vault
+    </a>
+
+    <div class="search-wrap">
+      <input
+        id="searchInput"
+        type="text"
+        class="search-input"
+        placeholder="Buscar prendas, drops..."
+        aria-label="Buscar algo"
+      />
+    </div>
+
+    <div class="top-actions">
+      <button id="ordersBtn" type="button" class="orders-btn">
+        Mis pedidos
+        <span id="ordersBadge" class="orders-count">0</span>
+      </button>
+      <button id="profileBtn" type="button" class="profile-circle" aria-label="Perfil">EV</button>
+    </div>
+  </header>
+
+  <section class="hero-banner" aria-label="Anuncio">
+    <div class="hero-inner">
+      <div class="drop-pill">Colección Oficial 2026</div>
+      <h1 class="announcement-title">(ANUNCIO)</h1>
+      <p class="hero-subtitle">
+        Prendas esenciales de corte limpio y edición limitada diseñadas para el día a día.
+      </p>
+
+      <div class="countdown-box">
+        <p id="dropCountdown" class="countdown-text">
+          Primer Drop en: <span>5 días 0 horas 0 minutos y 0 segundos</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <main class="featured-section">
+    <div class="section-header">
+      <h2 class="section-title">Productos Destacados</h2>
+      <span class="section-tag">1 prenda disponible</span>
+    </div>
+
+    <div class="products-panel">
+      <div class="products-grid" id="productsGrid">
+        <a href="producto.html?id=1" class="product-card" data-name="camisa essentials">
+          <div class="product-visual">
+            <span class="badge-new">Drop 01</span>
+            <svg width="88" height="88" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
+            </svg>
+          </div>
+          <h3 class="product-name">Camisa Essentials</h3>
+          <p class="product-desc">Corte boxy premium • Algodón 100% pesado</p>
+          <div class="product-footer">
+            <span class="product-price">$350 c/u</span>
+            <span class="product-cta">Ver prenda &rarr;</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div class="modal-header">
+        <strong id="modalTitle">Información</strong>
+        <button id="closeModalBtn" type="button" class="close-btn">X</button>
+      </div>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // Fade-in seguro al cargar
+    document.body.style.opacity = "0.2";
+    window.requestAnimationFrame(() => {
+      document.body.style.opacity = "1";
+    });
+
+    // Contador de 5 días para el Primer Drop
+    const FIVE_DAYS_MS = 5 * 24 * 60 * 60 * 1000;
+    let targetTimestamp = Number(localStorage.getItem("essence_drop_target"));
+
+    if (!targetTimestamp || targetTimestamp <= Date.now()) {
+      targetTimestamp = Date.now() + FIVE_DAYS_MS;
+      localStorage.setItem("essence_drop_target", String(targetTimestamp));
+    }
+
+    const countdownEl = document.getElementById("dropCountdown");
+
+    function updateCountdown() {
+      const diff = Math.max(0, targetTimestamp - Date.now());
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      countdownEl.innerHTML = `Primer Drop en: <span>${days} días ${hours} horas ${minutes} minutos y${seconds} segundos</span>`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // Buscador
+    const searchInput = document.getElementById("searchInput");
+    const productCards = document.querySelectorAll(".product-card");
+
+    searchInput.addEventListener("input", (e) => {
+      const query = e.target.value.trim().toLowerCase();
+      productCards.forEach((card) => {
+        const name = card.dataset.name || "";
+        card.style.display = name.includes(query) ? "flex" : "none";
+      });
+    });
+
+    // Modal de pedidos y cuenta
+    const ordersBtn = document.getElementById("ordersBtn");
+    const ordersBadge = document.getElementById("ordersBadge");
+    const profileBtn = document.getElementById("profileBtn");
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalContent = document.getElementById("modalContent");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+
+    function refreshOrdersBadge() {
+      const saved = JSON.parse(localStorage.getItem("essence_orders") || "[]");
+      ordersBadge.textContent = saved.length;
+    }
+
+    function openPopup(title, html) {
+      modalTitle.textContent = title;
+      modalContent.innerHTML = html;
+      modalBackdrop.classList.add("open");
+    }
+
+    function closePopup() {
+      modalBackdrop.classList.remove("open");
+    }
+
+    ordersBtn.addEventListener("click", () => {
+      const savedOrders = JSON.parse(localStorage.getItem("essence_orders") || "[]");
+
+      if (savedOrders.length === 0) {
+        openPopup(
+          "Mis pedidos",
+          `
+          <p style="color: #6b7280; font-size: 0.9rem;">Aún no tienes prendas agregadas a tus pedidos.</p>
+          <a href="producto.html?id=
