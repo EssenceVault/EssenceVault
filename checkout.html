@@ -93,6 +93,12 @@
       margin-bottom: 14px;
     }
 
+    .two-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
     .field {
       margin-bottom: 12px;
     }
@@ -116,6 +122,35 @@
       background-color: #ffffff;
     }
 
+    .transfer-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background-color: #f3f4f6;
+      border: 2.5px solid #000000;
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+    }
+
+    .transfer-btn {
+      background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+      color: #000000;
+      border: 2.5px solid #000000;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.15s ease;
+    }
+
+    .transfer-btn:hover {
+      transform: translateY(-1px);
+    }
+
     .discount-btn {
       width: 100%;
       background: linear-gradient(180deg, #fce055 0%, #eab308 100%);
@@ -126,7 +161,7 @@
       font-size: 0.9rem;
       font-weight: 800;
       cursor: pointer;
-      margin-top: 6px;
+      margin-top: 4px;
       transition: transform 0.15s ease;
     }
 
@@ -171,7 +206,7 @@
     }
 
     .finish-btn {
-      margin-top: 16px;
+      margin-top: 14px;
       width: 100%;
       background: linear-gradient(180deg, #4ade80 0%, #15803d 100%);
       color: #000000;
@@ -184,15 +219,48 @@
     }
 
     .confirm-msg {
-      margin-top: 12px;
-      font-size: 0.88rem;
+      margin-top: 10px;
+      font-size: 0.86rem;
       font-weight: 800;
-      color: #15803d;
+      color: #dc2626;
       text-align: center;
     }
 
+    /* Pantalla de carga con puntos suspensivos animados */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(17, 19, 23, 0.92);
+      color: #ffffff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 200;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .loading-overlay.open {
+      display: flex;
+      animation: fadeInPage 0.25s ease;
+    }
+
+    .loading-text {
+      font-size: clamp(1.3rem, 3.5vw, 2rem);
+      font-weight: 800;
+      letter-spacing: 0.4px;
+    }
+
+    .loading-dots {
+      display: inline-block;
+      width: 36px;
+      text-align: left;
+    }
+
     @media (max-width: 760px) {
-      .checkout-grid {
+      .checkout-grid,
+      .two-cols {
         grid-template-columns: 1fr;
       }
     }
@@ -229,7 +297,18 @@
 
           <div class="field">
             <label for="address">Dirección de entrega</label>
-            <input id="address" type="text" required placeholder="Calle, número, colonia, ciudad" />
+            <input id="address" type="text" required placeholder="Calle, número, colonia" />
+          </div>
+
+          <div class="two-cols">
+            <div class="field">
+              <label for="postalCode">Código postal</label>
+              <input id="postalCode" type="text" required placeholder="Ej. 54000" />
+            </div>
+            <div class="field">
+              <label for="city">Ciudad</label>
+              <input id="city" type="text" required placeholder="Ej. Tlalnepantla" />
+            </div>
           </div>
 
           <div class="field">
@@ -238,6 +317,16 @@
               <option value="standard" data-cost="90">Envío Estándar ($90 MXN)</option>
               <option value="express" data-cost="150">Envío Express ($150 MXN)</option>
             </select>
+          </div>
+
+          <div class="transfer-option">
+            <div>
+              <strong style="font-size:0.88rem;">Pago por Transferencia</strong>
+              <div style="font-size:0.78rem; color:#4b5563;">Modo prueba activo</div>
+            </div>
+            <button type="button" id="transferPayBtn" class="transfer-btn">
+              Pagar por Transferencia
+            </button>
           </div>
 
           <button type="button" id="toggleDiscountBtn" class="discount-btn">
@@ -288,8 +377,14 @@
     </div>
   </main>
 
+  <!-- Pantalla de carga con puntos suspensivos apareciendo y desapareciendo -->
+  <div id="loadingOverlay" class="loading-overlay" aria-live="polite">
+    <div class="loading-text">
+      Procesando tu compra<span id="loadingDots" class="loading-dots">...</span>
+    </div>
+  </div>
+
   <script>
-    // 2 códigos de 10% y 3 códigos de 20%
     const DISCOUNT_CODES = {
       dilMDkH4Ae: 0.10,
       nXajxs9VmS: 0.10,
@@ -306,9 +401,19 @@
     const sumShipping = document.getElementById("sumShipping");
     const sumTotal = document.getElementById("sumTotal");
     const shippingSelect = document.getElementById("shippingType");
+    const loadingOverlay = document.getElementById("loadingOverlay");
+    const loadingDots = document.getElementById("loadingDots");
+    const confirmMsg = document.getElementById("confirmMsg");
 
     let activeDiscountRate = 0;
     let appliedCodeLabel = "";
+    let dotFrame = 0;
+
+    setInterval(() => {
+      const frames = ["", ".", "..", "..."];
+      dotFrame = (dotFrame + 1) % frames.length;
+      loadingDots.textContent = frames[dotFrame];
+    }, 420);
 
     function calculateTotals() {
       const totalQty = cart.reduce((s, item) => s + (item.qty || 1), 0);
@@ -360,36 +465,47 @@
       calculateTotals();
     });
 
-    const checkoutForm = document.getElementById("checkoutForm");
-    const confirmMsg = document.getElementById("confirmMsg");
-
-    checkoutForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      if (!cart.length) {
-        confirmMsg.style.color = "#dc2626";
-        confirmMsg.textContent = "Agrega al menos una prenda antes de completar el pedido.";
-        return;
-      }
-
+    function saveOrderAndGoToOrders(paymentMethod) {
       const totals = calculateTotals();
       const orders = JSON.parse(localStorage.getItem("essence_orders") || "[]");
-      const summary = cart.map((i) => `${i.qty}x ${i.name} (${i.size})`).join(", ");
+      const summary = cart.length
+        ? cart.map((i) => `${i.qty}x ${i.name} (${i.size})`).join(", ")
+        : "1x CAMISA ESSENTIALS (M)";
 
       orders.push({
         summary,
-        total: totals.finalPrice,
-        customer: document.getElementById("fullName").value.trim(),
-        email: document.getElementById("email").value.trim()
+        total: totals.finalPrice || 350,
+        customer: document.getElementById("fullName").value.trim() || "Cliente Prueba",
+        email: document.getElementById("email").value.trim() || "prueba@essencevault.local",
+        postalCode: document.getElementById("postalCode").value.trim() || "54000",
+        city: document.getElementById("city").value.trim() || "Tlalnepantla",
+        paymentMethod,
+        status: "Procesando"
       });
 
       localStorage.setItem("essence_orders", JSON.stringify(orders));
       localStorage.setItem("essence_cart", "[]");
 
-      confirmMsg.style.color = "#15803d";
-      confirmMsg.textContent = "¡Pedido registrado en Mis pedidos!";
       setTimeout(() => {
-        window.location.href = "index.html";
-      }, 900);
+        window.location.href = "pedidos.html";
+      }, 2200);
+    }
+
+    // Botón automático de transferencia para pruebas
+    document.getElementById("transferPayBtn").addEventListener("click", () => {
+      loadingOverlay.classList.add("open");
+      saveOrderAndGoToOrders("Transferencia");
+    });
+
+    document.getElementById("checkoutForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!cart.length) {
+        confirmMsg.textContent = "Agrega al menos una prenda en el carrito antes de completar.";
+        return;
+      }
+      confirmMsg.textContent = "";
+      loadingOverlay.classList.add("open");
+      saveOrderAndGoToOrders("Tarjeta / Directo");
     });
 
     calculateTotals();
