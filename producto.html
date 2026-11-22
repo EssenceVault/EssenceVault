@@ -3,178 +3,184 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Producto - Essence Vault</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <title>Camisa Essentials — Essence Vault</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: "Montserrat", sans-serif;
+      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     body {
-      font-family: "Montserrat", sans-serif;
-      background-color: #ffffff;
-      color: #000000;
+      background-color: #f4f5f7;
+      color: #111827;
       min-height: 100vh;
-      animation: pageFadeIn 0.45s ease-out;
-    }
-
-    @keyframes pageFadeIn {
-      from {
-        opacity: 0.15;
-      }
-      to {
-        opacity: 1;
-      }
+      opacity: 1;
+      transition: opacity 0.4s ease;
     }
 
     .topbar {
-      background-color: #666666;
-      border-bottom: 3px solid #000000;
-      padding: 8px 14px;
+      background-color: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 14px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
     }
 
     .brand {
-      color: #ffffff;
-      font-size: 1.45rem;
-      font-weight: 600;
+      color: #111827;
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
       text-decoration: none;
     }
 
     .back-btn {
-      background-color: #ffffff;
-      color: #000000;
-      border: 2.5px solid #000000;
-      border-radius: 9px;
-      padding: 5px 12px;
+      background-color: #f3f4f6;
+      color: #111827;
+      border: 1px solid #e5e7eb;
+      border-radius: 999px;
+      padding: 8px 16px;
       text-decoration: none;
-      font-weight: 600;
-      font-size: 0.88rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+
+    .back-btn:hover {
+      border-color: #10b981;
     }
 
     .container {
-      max-width: 820px;
-      margin: 28px auto;
-      padding: 0 16px;
+      max-width: 920px;
+      margin: 40px auto;
+      padding: 0 20px;
     }
 
     .product-panel {
-      background-color: #bdbdbd;
-      border: 4px solid #000000;
-      border-radius: 28px;
-      padding: 28px;
+      background-color: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 24px;
+      padding: 32px;
       display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: 28px;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 32px;
       align-items: center;
-      animation: pageFadeIn 0.45s ease-out;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     }
 
     .image-placeholder {
-      background-color: #ffffff;
-      border: 4px solid #000000;
-      border-radius: 26px;
-      aspect-ratio: 1 / 1;
+      background-color: #e5e7eb;
+      border-radius: 18px;
+      height: 320px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      font-weight: 500;
-      font-size: 0.9rem;
-    }
-
-    .details h1 {
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin-bottom: 6px;
+      gap: 12px;
+      color: #4b5563;
+      font-size: 0.85rem;
+      font-weight: 600;
     }
 
     .id-badge {
       display: inline-block;
-      background: #000000;
-      color: #ffffff;
-      padding: 3px 9px;
-      border-radius: 6px;
-      font-size: 0.78rem;
-      font-weight: 600;
+      background-color: #ecfdf5;
+      border: 1px solid #10b981;
+      color: #059669;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 800;
       margin-bottom: 12px;
     }
 
+    .details h1 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+
+    .details p {
+      color: #4b5563;
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
     .price {
-      font-size: 1.35rem;
-      font-weight: 700;
-      margin: 12px 0;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #059669;
+      margin: 16px 0;
     }
 
     .sizes {
       display: flex;
-      gap: 8px;
-      margin: 12px 0 18px;
+      gap: 10px;
+      margin: 10px 0 22px;
     }
 
     .size-btn {
-      background: #ffffff;
-      border: 2.5px solid #000000;
-      border-radius: 8px;
-      padding: 6px 13px;
-      font-family: "Montserrat", sans-serif;
+      background-color: #f3f4f6;
+      color: #111827;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 9px 16px;
       font-weight: 700;
       cursor: pointer;
     }
 
     .size-btn.active {
-      background: #000000;
+      background-color: #111827;
       color: #ffffff;
+      border-color: #111827;
     }
 
     .add-btn {
       width: 100%;
-      background-color: #00a63e;
+      background-color: #10b981;
       color: #ffffff;
-      border: 3px solid #000000;
-      border-radius: 10px;
-      padding: 11px 16px;
-      font-family: "Montserrat", sans-serif;
+      border: none;
+      border-radius: 12px;
+      padding: 13px 18px;
       font-size: 0.98rem;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
     }
 
     .add-btn:hover {
-      background-color: #008f35;
+      background-color: #059669;
     }
 
-    /* Pop-up fade in */
-    .bottom-popup {
+    .toast-msg {
       position: fixed;
-      bottom: 18px;
+      bottom: 22px;
       left: 50%;
       transform: translateX(-50%);
-      background: #ffffff;
-      border: 4px solid #000000;
-      border-radius: 14px;
-      padding: 12px 20px;
+      background-color: #111827;
+      color: #ffffff;
+      border-radius: 999px;
+      padding: 11px 22px;
+      font-size: 0.88rem;
       font-weight: 700;
-      z-index: 100;
       display: none;
+      z-index: 100;
     }
 
-    .bottom-popup.open {
+    .toast-msg.open {
       display: block;
-      animation: pageFadeIn 0.25s ease-out;
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 680px) {
       .product-panel {
         grid-template-columns: 1fr;
+        padding: 22px;
       }
     }
   </style>
@@ -190,18 +196,22 @@
     <div id="productContainer" class="product-panel"></div>
   </main>
 
-  <div id="bottomPopup" class="bottom-popup">
-    Agregado a Mis pedidos
-  </div>
+  <div id="toastMsg" class="toast-msg">Agregado a Mis pedidos</div>
 
   <script>
+    document.body.style.opacity = "0.2";
+    window.requestAnimationFrame(() => {
+      document.body.style.opacity = "1";
+    });
+
     const catalog = {
       1: {
         id: 1,
-        name: "Camisa Essential",
-        price: 599,
+        name: "Camisa Essentials",
+        price: 350,
+        priceLabel: "$350 c/u",
         description:
-          "Camisa esencial de algodón pesado con corte boxy, cuello estructurado y acabado minimalista Essence Vault."
+          "Camisa Essentials de algodón pesado con corte relajado, cuello reforzado y acabado minimalista Essence Vault."
       }
     };
 
@@ -209,7 +219,7 @@
     const productId = Number(params.get("id")) || 1;
     const product = catalog[productId];
     const container = document.getElementById("productContainer");
-    const bottomPopup = document.getElementById("bottomPopup");
+    const toastMsg = document.getElementById("toastMsg");
 
     let selectedSize = "M";
 
@@ -217,29 +227,29 @@
       container.innerHTML = `
         <div style="grid-column: 1 / -1;">
           <h1>Producto no encontrado (id=${productId})</h1>
-          <p style="margin-top: 8px;">Este enlace es un placeholder para futuros productos.</p>
+          <p style="margin-top: 8px;">Placeholder reservado para futuros lanzamientos.</p>
         </div>
       `;
     } else {
-      document.title = `${product.name} - Essence Vault`;
+      document.title = `${product.name} — Essence Vault`;
 
       container.innerHTML = `
         <div class="image-placeholder">
-          <svg width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="108" height="108" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
           </svg>
-          <span>Vista previa placeholder</span>
+          <span>Vista previa placeholder (ID #${product.id})</span>
         </div>
 
         <div class="details">
-          <span class="id-badge">ID: ${product.id}</span>
+          <span class="id-badge">PRODUCTO ID: ${product.id}</span>
           <h1>${product.name}</h1>
           <p>${product.description}</p>
-          <div class="price">$${product.price} MXN</div>
+          <div class="price">${product.priceLabel}</div>
 
           <div>
-            <strong>Talla:</strong>
-            <div class="sizes" id="sizeGroup">
+            <strong style="font-size: 0.88rem;">Selecciona tu talla:</strong>
+            <div class="sizes">
               <button type="button" class="size-btn" data-size="S">S</button>
               <button type="button" class="size-btn active" data-size="M">M</button>
               <button type="button" class="size-btn" data-size="L">L</button>
@@ -271,9 +281,9 @@
         });
         localStorage.setItem("essence_orders", JSON.stringify(orders));
 
-        bottomPopup.textContent = `Agregado: ${product.name} (${selectedSize})`;
-        bottomPopup.classList.add("open");
-        setTimeout(() => bottomPopup.classList.remove("open"), 2600);
+        toastMsg.textContent = `Agregado: ${product.name} (${selectedSize}) — ${product.priceLabel}`;
+        toastMsg.classList.add("open");
+        setTimeout(() => toastMsg.classList.remove("open"), 2600);
       });
     }
   </script>
