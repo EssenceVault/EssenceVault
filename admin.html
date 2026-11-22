@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Admin — Essence Vault</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Montserrat", sans-serif;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #000000;
+      min-height: 100vh;
+      animation: fadeInPage 0.35s ease;
+    }
+
+    @keyframes fadeInPage {
+      from { opacity: 0.3; }
+      to { opacity: 1; }
+    }
+
+    .topbar {
+      background-color: #cfd5dc;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      color: #7c848d;
+      font-size: 1.05rem;
+      font-weight: 800;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .back-btn {
+      background: linear-gradient(180deg, #fce055 0%, #eab308 100%);
+      color: #000000;
+      border: 3px solid #000000;
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: 0.86rem;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .wrap {
+      max-width: 920px;
+      margin: 24px auto;
+      padding: 0 14px 48px;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, #9aa3b0 0%, #59606b 100%);
+      border-radius: 34px;
+      padding: 24px;
+    }
+
+    .gate-card,
+    .admin-card {
+      background-color: #ffffff;
+      border: 4px solid #000000;
+      border-radius: 26px;
+      padding: 22px;
+    }
+
+    .gate-card {
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    .gate-card h1,
+    .admin-header h1 {
+      font-size: 1.35rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .gate-card p {
+      font-size: 0.85rem;
+      color: #4b5563;
+      margin-bottom: 14px;
+    }
+
+    .gate-input {
+      width: 100%;
+      height: 40px;
+      border: 2.5px solid #000000;
+      border-radius: 12px;
+      padding: 0 12px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .gate-btn {
+      width: 100%;
+      background: linear-gradient(180deg, #4ade80 0%, #15803d 100%);
+      color: #000000;
+      border: 3px solid #000000;
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .gate-error {
+      margin-top: 10px;
+      color: #dc2626;
+      font-size: 0.86rem;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .order-item {
+      border: 2.5px solid #000000;
+      border-radius: 18px;
+      padding: 14px;
+      margin-top: 14px;
+      background-color: #f9fafb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .status-select {
+      height: 36px;
+      border: 2.5px solid #000000;
+      border-radius: 10px;
+      padding: 0 10px;
+      font-weight: 800;
+      background-color: #ffffff;
+      cursor: pointer;
+    }
+
+    .saved-note {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #15803d;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="index.html" class="brand">ESSENCE<br />VAULT</a>
+    <a href="pedidos.html" class="back-btn">Ver Mis pedidos 📦</a>
+  </header>
+
+  <main class="wrap">
+    <div class="panel">
+      <div id="gateView" class="gate-card">
+        <h1>Acceso Administrador</h1>
+        <p>Ingresa la contraseña exclusiva para administrar los pedidos.</p>
+        <form id="gateForm">
+          <input
+            id="adminPassInput"
+            type="password"
+            class="gate-input"
+            placeholder="Contraseña de administrador"
+            required
+          />
+          <button type="submit" class="gate-btn">Entrar al panel</button>
+        </form>
+        <div id="gateError" class="gate-error"></div>
+      </div>
+
+      <div id="adminView" class="admin-card" style="display: none;">
+        <div class="admin-header">
+          <h1>Gestión de Pedidos (Admin)</h1>
+          <p style="font-size:0.86rem; color:#4b5563;">Cambia el estado de cada pedido: Procesando, Preparando o Enviado.</p>
+        </div>
+        <div id="adminOrdersList"></div>
+        <div id="savedNote" class="saved-note"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const REQUIRED_ADMIN_KEY = "admin.user.password = true";
+
+    const gateView = document.getElementById("gateView");
+    const adminView = document.getElementById("adminView");
+    const gateForm = document.getElementById("gateForm");
+    const adminPassInput = document.getElementById("adminPassInput");
+    const gateError = document.getElementById("gateError");
+    const adminOrdersList = document.getElementById("adminOrdersList");
+    const savedNote = document.getElementById("savedNote");
+
+    function renderAdminOrders() {
+      const orders = JSON.parse(localStorage.getItem("essence_orders") || "[]");
+
+      if (!orders.length) {
+        adminOrdersList.innerHTML = `<p style="margin-top:16px; font-size:0.9rem;">No hay pedidos registrados por el momento.</p>`;
+        return;
+      }
+
+      adminOrdersList.innerHTML = orders
+        .map((order, idx) => {
+          const currentStatus = order.status || "Procesando";
+          return `
+            <div class="order-item">
+              <div>
+                <strong>Pedido #${idx + 1}</strong> · ${order.customer || "Cliente"} (${order.email || "—"})<br />
+                <span style="font-size:0.84rem; color:#374151;">
+                  ${order.summary || "1x CAMISA ESSENTIALS (M)"} · Ciudad: ${order.city || "—"} · C.P.: ${order.postalCode || "—"} · $${order.total || 0} MXN
+                </span>
+              </div>
+              <div>
+                <label for="statusSelect-${idx}" style="font-size:0.8rem; font-weight:800; margin-right:6px;">Estado:</label>
+                <select id="statusSelect-${idx}" class="status-select" data-index="${idx}">
+                  <option value="Procesando" ${currentStatus === "Procesando" ? "selected" : ""}>Procesando</option>
+                  <option value="Preparando" ${currentStatus === "Preparando" ? "selected" : ""}>Preparando</option>
+                  <option value="Enviado" ${currentStatus === "Enviado" ? "selected" : ""}>Enviado</option>
+                </select>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+
+      document.querySelectorAll(".status-select").forEach((sel) => {
+        sel.addEventListener("change", () => {
+          const idx = Number(sel.dataset.index);
+          const updated = JSON.parse(localStorage.getItem("essence_orders") || "[]");
+          if (updated[idx]) {
+            updated[idx].status = sel.value;
+            localStorage.setItem("essence_orders", JSON.stringify(updated));
+            savedNote.textContent = `Pedido #${idx + 1} actualizado a "${sel.value}".`;
+          }
+        });
+      });
+    }
+
+    gateForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (adminPassInput.value.trim() === REQUIRED_ADMIN_KEY) {
+        gateError.textContent = "";
+        gateView.style.display = "none";
+        adminView.style.display = "block";
+        renderAdminOrders();
+      } else {
+        gateError.textContent = "Contraseña de administrador incorrecta.";
+      }
+    });
+  </script>
+</body>
+</html>
