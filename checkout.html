@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout — Essence Vault</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Montserrat", sans-serif;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #000000;
+      min-height: 100vh;
+      animation: fadeInPage 0.35s ease;
+    }
+
+    @keyframes fadeInPage {
+      from { opacity: 0.3; }
+      to { opacity: 1; }
+    }
+
+    .topbar {
+      background-color: #cfd5dc;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      color: #7c848d;
+      font-size: 1.05rem;
+      font-weight: 800;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .back-btn {
+      background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+      color: #000000;
+      border: 3px solid #000000;
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 22px auto;
+      padding: 0 14px 48px;
+    }
+
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, #9aa3b0 0%, #59606b 100%);
+      border-radius: 34px;
+      padding: 22px;
+    }
+
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border: 4px solid #000000;
+      border-radius: 26px;
+      padding: 20px;
+    }
+
+    .card h2 {
+      font-size: 1.12rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      height: 38px;
+      border: 2.5px solid #000000;
+      border-radius: 12px;
+      padding: 0 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      background-color: #ffffff;
+    }
+
+    .discount-btn {
+      width: 100%;
+      background: linear-gradient(180deg, #fce055 0%, #eab308 100%);
+      color: #000000;
+      border: 3px solid #000000;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: transform 0.15s ease;
+    }
+
+    .discount-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .discount-box {
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #f3f4f6;
+      border: 2px solid #000000;
+      border-radius: 14px;
+    }
+
+    .discount-box.open {
+      display: block;
+    }
+
+    .discount-status {
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 9px;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.2rem;
+      font-weight: 900;
+      padding-top: 10px;
+      margin-top: 10px;
+      border-top: 2.5px solid #000000;
+    }
+
+    .finish-btn {
+      margin-top: 16px;
+      width: 100%;
+      background: linear-gradient(180deg, #4ade80 0%, #15803d 100%);
+      color: #000000;
+      border: 3px solid #000000;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 0.96rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .confirm-msg {
+      margin-top: 12px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #15803d;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="index.html" class="brand">ESSENCE<br />VAULT</a>
+    <a href="carrito.html" class="back-btn">&larr; Volver a Mi carrito 🛒</a>
+  </header>
+
+  <main class="wrap">
+    <h1 class="page-title">Finalizar Compra</h1>
+    <div class="panel">
+      <div class="checkout-grid">
+        <form id="checkoutForm" class="card">
+          <h2>Información personal y envío</h2>
+
+          <div class="field">
+            <label for="fullName">Nombre completo</label>
+            <input id="fullName" type="text" required placeholder="Tu nombre completo" />
+          </div>
+
+          <div class="field">
+            <label for="email">Correo electrónico</label>
+            <input id="email" type="email" required placeholder="correo@ejemplo.com" />
+          </div>
+
+          <div class="field">
+            <label for="phone">Teléfono</label>
+            <input id="phone" type="tel" required placeholder="55 0000 0000" />
+          </div>
+
+          <div class="field">
+            <label for="address">Dirección de entrega</label>
+            <input id="address" type="text" required placeholder="Calle, número, colonia, ciudad" />
+          </div>
+
+          <div class="field">
+            <label for="shippingType">Tipo de envío</label>
+            <select id="shippingType">
+              <option value="standard" data-cost="90">Envío Estándar ($90 MXN)</option>
+              <option value="express" data-cost="150">Envío Express ($150 MXN)</option>
+            </select>
+          </div>
+
+          <button type="button" id="toggleDiscountBtn" class="discount-btn">
+            Usar Código de Descuento🏷️
+          </button>
+
+          <div id="discountBox" class="discount-box">
+            <div class="field" style="margin-bottom:6px;">
+              <label for="discountCode">Ingresa tu código</label>
+              <input id="discountCode" type="text" placeholder="Ej. dilMDkH4Ae" />
+            </div>
+            <button type="button" id="applyDiscountBtn" class="discount-btn" style="margin-top:4px;">
+              Aplicar código
+            </button>
+            <div id="discountStatus" class="discount-status"></div>
+          </div>
+
+          <button type="submit" class="finish-btn">Completar pedido</button>
+          <div id="confirmMsg" class="confirm-msg"></div>
+        </form>
+
+        <aside class="card">
+          <h2>Resumen de pago</h2>
+          <div id="itemsSummary" style="margin-bottom: 12px; font-size: 0.86rem; color: #374151;"></div>
+
+          <div class="calc-row">
+            <span>Cantidad de prendas:</span>
+            <strong id="sumQty">0</strong>
+          </div>
+          <div class="calc-row">
+            <span>Subtotal prendas:</span>
+            <strong id="sumSubtotal">$0 MXN</strong>
+          </div>
+          <div class="calc-row">
+            <span>Descuento:</span>
+            <strong id="sumDiscount">-$0 MXN</strong>
+          </div>
+          <div class="calc-row">
+            <span>Envío:</span>
+            <strong id="sumShipping">$90 MXN</strong>
+          </div>
+          <div class="total-row">
+            <span>Precio final:</span>
+            <span id="sumTotal">$0 MXN</span>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // 2 códigos de 10% y 3 códigos de 20%
+    const DISCOUNT_CODES = {
+      dilMDkH4Ae: 0.10,
+      nXajxs9VmS: 0.10,
+      K1l3H4xjAm: 0.20,
+      "5IMjDHfGcP": 0.20,
+      YS3kvbdwvk: 0.20
+    };
+
+    const cart = JSON.parse(localStorage.getItem("essence_cart") || "[]");
+    const itemsSummary = document.getElementById("itemsSummary");
+    const sumQty = document.getElementById("sumQty");
+    const sumSubtotal = document.getElementById("sumSubtotal");
+    const sumDiscount = document.getElementById("sumDiscount");
+    const sumShipping = document.getElementById("sumShipping");
+    const sumTotal = document.getElementById("sumTotal");
+    const shippingSelect = document.getElementById("shippingType");
+
+    let activeDiscountRate = 0;
+    let appliedCodeLabel = "";
+
+    function calculateTotals() {
+      const totalQty = cart.reduce((s, item) => s + (item.qty || 1), 0);
+      const subtotal = cart.reduce((s, item) => s + item.price * (item.qty || 1), 0);
+      const discountAmount = Math.round(subtotal * activeDiscountRate);
+      const shippingCost = Number(shippingSelect.selectedOptions[0].dataset.cost) || 0;
+      const finalPrice = Math.max(0, subtotal - discountAmount + shippingCost);
+
+      itemsSummary.innerHTML = cart.length
+        ? cart.map((i) => `<div>• ${i.qty}x ${i.name} (${i.size}) — $${i.price * i.qty} MXN</div>`).join("")
+        : `<div>Sin prendas en el carrito.</div>`;
+
+      sumQty.textContent = totalQty;
+      sumSubtotal.textContent = `$${subtotal} MXN`;
+      sumDiscount.textContent = activeDiscountRate > 0
+        ? `-$${discountAmount} MXN (${Math.round(activeDiscountRate * 100)}% · ${appliedCodeLabel})`
+        : `-$0 MXN`;
+      sumShipping.textContent = `$${shippingCost} MXN`;
+      sumTotal.textContent = `$${finalPrice} MXN`;
+
+      return { totalQty, subtotal, discountAmount, shippingCost, finalPrice };
+    }
+
+    shippingSelect.addEventListener("change", calculateTotals);
+
+    const toggleDiscountBtn = document.getElementById("toggleDiscountBtn");
+    const discountBox = document.getElementById("discountBox");
+    const applyDiscountBtn = document.getElementById("applyDiscountBtn");
+    const discountCodeInput = document.getElementById("discountCode");
+    const discountStatus = document.getElementById("discountStatus");
+
+    toggleDiscountBtn.addEventListener("click", () => {
+      discountBox.classList.toggle("open");
+    });
+
+    applyDiscountBtn.addEventListener("click", () => {
+      const code = discountCodeInput.value.trim();
+      if (Object.prototype.hasOwnProperty.call(DISCOUNT_CODES, code)) {
+        activeDiscountRate = DISCOUNT_CODES[code];
+        appliedCodeLabel = code;
+        discountStatus.style.color = "#15803d";
+        discountStatus.textContent = `Código aplicado: ${Math.round(activeDiscountRate * 100)}% de descuento.`;
+      } else {
+        activeDiscountRate = 0;
+        appliedCodeLabel = "";
+        discountStatus.style.color = "#dc2626";
+        discountStatus.textContent = "Código de descuento no válido.";
+      }
+      calculateTotals();
+    });
+
+    const checkoutForm = document.getElementById("checkoutForm");
+    const confirmMsg = document.getElementById("confirmMsg");
+
+    checkoutForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!cart.length) {
+        confirmMsg.style.color = "#dc2626";
+        confirmMsg.textContent = "Agrega al menos una prenda antes de completar el pedido.";
+        return;
+      }
+
+      const totals = calculateTotals();
+      const orders = JSON.parse(localStorage.getItem("essence_orders") || "[]");
+      const summary = cart.map((i) => `${i.qty}x ${i.name} (${i.size})`).join(", ");
+
+      orders.push({
+        summary,
+        total: totals.finalPrice,
+        customer: document.getElementById("fullName").value.trim(),
+        email: document.getElementById("email").value.trim()
+      });
+
+      localStorage.setItem("essence_orders", JSON.stringify(orders));
+      localStorage.setItem("essence_cart", "[]");
+
+      confirmMsg.style.color = "#15803d";
+      confirmMsg.textContent = "¡Pedido registrado en Mis pedidos!";
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 900);
+    });
+
+    calculateTotals();
+  </script>
+</body>
+</html>
