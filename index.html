@@ -19,15 +19,14 @@
       background-color: #ffffff;
       color: #000000;
       min-height: 100vh;
-      animation: fadeInPage 0.4s ease;
+      animation: fadeInPage 0.35s ease;
     }
 
     @keyframes fadeInPage {
-      from { opacity: 0.25; }
+      from { opacity: 0.3; }
       to { opacity: 1; }
     }
 
-    /* Barra superior */
     .topbar {
       background-color: #cfd5dc;
       padding: 8px 14px;
@@ -36,6 +35,8 @@
       justify-content: space-between;
       gap: 12px;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 40;
     }
 
     .brand {
@@ -93,16 +94,11 @@
       font-weight: 600;
       color: #111827;
       outline: none;
-      transition: box-shadow 0.2s ease;
     }
 
     .search-input::placeholder {
       color: #9ca3af;
       font-weight: 500;
-    }
-
-    .search-input:focus {
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.35);
     }
 
     .search-loupe {
@@ -135,6 +131,10 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
+    .profile-wrap {
+      position: relative;
+    }
+
     .avatar-circle {
       width: 38px;
       height: 38px;
@@ -150,7 +150,56 @@
       transform: scale(1.06);
     }
 
-    /* Banner del Primer Drop */
+    /* Mini apartado "Más Opciones" */
+    .more-options-popover {
+      position: absolute;
+      right: 0;
+      top: 46px;
+      width: 215px;
+      background-color: #ffffff;
+      border: 3px solid #000000;
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+      z-index: 90;
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .more-options-popover.open {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .more-options-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #000000;
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    .more-options-btn {
+      width: 100%;
+      background: linear-gradient(180deg, #fce055 0%, #eab308 100%);
+      color: #000000;
+      border: 2.5px solid #000000;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .more-options-btn:hover {
+      transform: scale(1.02);
+    }
+
     .drop-banner {
       background: linear-gradient(180deg, #6e7785 0%, #4b525e 52%, #111317 100%);
       color: #ffffff;
@@ -203,7 +252,6 @@
       padding-top: 2px;
     }
 
-    /* Franja roja de bienvenida */
     .welcome-bar {
       background-color: #ff2a2a;
       color: #000000;
@@ -213,7 +261,6 @@
       font-weight: 700;
     }
 
-    /* Sección Productos Destacados */
     .featured-wrapper {
       padding: 10px 14px 24px;
     }
@@ -246,7 +293,6 @@
       min-height: 360px;
     }
 
-    /* Tarjeta de producto */
     .product-item {
       width: 196px;
       display: flex;
@@ -272,11 +318,6 @@
       justify-content: center;
       margin-bottom: 12px;
       box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
-      transition: box-shadow 0.22s ease;
-    }
-
-    .product-item:hover .shirt-card {
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.26);
     }
 
     .info-pill {
@@ -325,7 +366,6 @@
       transform: scale(1.02);
     }
 
-    /* Modal con transición fade */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -352,12 +392,6 @@
       max-width: 400px;
       width: 100%;
       padding: 20px;
-      transform: translateY(12px);
-      transition: transform 0.25s ease;
-    }
-
-    .modal-backdrop.open .modal-box {
-      transform: translateY(0);
     }
 
     .modal-head {
@@ -413,7 +447,13 @@
       Mi carrito 🛒 (<span id="cartCount">0</span>)
     </a>
 
-    <button id="profileBtn" type="button" class="avatar-circle" aria-label="Perfil"></button>
+    <div class="profile-wrap">
+      <button id="profileBtn" type="button" class="avatar-circle" aria-label="Más opciones"></button>
+      <div id="moreOptionsPopover" class="more-options-popover" role="menu">
+        <div class="more-options-title">Más Opciones</div>
+        <button id="goAccountOrLoginBtn" type="button" class="more-options-btn">Ir a cuenta</button>
+      </div>
+    </div>
   </header>
 
   <section class="drop-banner" aria-label="Primer Drop">
@@ -441,7 +481,7 @@
     </div>
   </section>
 
-  <div class="welcome-bar">
+  <div id="welcomeBar" class="welcome-bar">
     Bienvenido a Essence Vault! @Usuario
   </div>
 
@@ -525,6 +565,36 @@
     tickTimer();
     setInterval(tickTimer, 1000);
 
+    // Sesión activa
+    const activeSession = JSON.parse(localStorage.getItem("essence_active_session") || "null");
+    const welcomeBar = document.getElementById("welcomeBar");
+    if (activeSession && activeSession.username) {
+      welcomeBar.textContent = `Bienvenido a Essence Vault! @${activeSession.username}`;
+    }
+
+    // Popover "Más Opciones" en el botón negro
+    const profileBtn = document.getElementById("profileBtn");
+    const moreOptionsPopover = document.getElementById("moreOptionsPopover");
+    const goAccountOrLoginBtn = document.getElementById("goAccountOrLoginBtn");
+
+    goAccountOrLoginBtn.textContent = activeSession ? "Ir a cuenta.html" : "Iniciar sesión / Crear";
+
+    profileBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      moreOptionsPopover.classList.toggle("open");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!moreOptionsPopover.contains(e.target) && e.target !== profileBtn) {
+        moreOptionsPopover.classList.remove("open");
+      }
+    });
+
+    goAccountOrLoginBtn.addEventListener("click", () => {
+      const sessionNow = JSON.parse(localStorage.getItem("essence_active_session") || "null");
+      window.location.href = sessionNow ? "cuenta.html" : "iniciodesesion.html";
+    });
+
     // Buscador
     const searchInput = document.getElementById("searchInput");
     const productItem = document.querySelector(".product-item");
@@ -534,7 +604,7 @@
       productItem.style.display = target.includes(q) ? "flex" : "none";
     });
 
-    // Badges de Carrito y Pedidos
+    // Badges
     const cartCountEl = document.getElementById("cartCount");
     const ordersCountEl = document.getElementById("ordersCount");
 
@@ -559,7 +629,6 @@
       syncCounters();
     });
 
-    // Modal
     const modalBackdrop = document.getElementById("modalBackdrop");
     const modalTitle = document.getElementById("modalTitle");
     const modalBody = document.getElementById("modalBody");
@@ -583,10 +652,6 @@
         .map((o, i) => `<li style="margin-bottom:6px;">#${i + 1} — ${o.summary} ($${o.total} MXN)</li>`)
         .join("");
       openModal("Mis pedidos", `<ul style="padding-left:18px; font-size:0.9rem;">${items}</ul>`);
-    });
-
-    document.getElementById("profileBtn").addEventListener("click", () => {
-      openModal("Perfil", `<p style="font-size:0.9rem; color:#4b5563;">Usuario: @Usuario — Essence Vault</p>`);
     });
 
     document.getElementById("closeModal").addEventListener("click", () => {
