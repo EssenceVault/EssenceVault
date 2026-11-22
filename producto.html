@@ -18,17 +18,29 @@
       background-color: #f4f5f7;
       color: #111827;
       min-height: 100vh;
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .fade-up.visible {
       opacity: 1;
-      transition: opacity 0.4s ease;
+      transform: translateY(0);
     }
 
     .topbar {
-      background-color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid #e5e7eb;
       padding: 14px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
     }
 
@@ -41,6 +53,12 @@
       text-decoration: none;
     }
 
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     .back-btn {
       background-color: #f3f4f6;
       color: #111827;
@@ -50,10 +68,40 @@
       text-decoration: none;
       font-weight: 700;
       font-size: 0.85rem;
+      transition: border-color 0.2s ease, transform 0.18s ease;
     }
 
     .back-btn:hover {
       border-color: #10b981;
+      transform: translateX(-2px);
+    }
+
+    .cart-btn {
+      background-color: #111827;
+      color: #ffffff;
+      border-radius: 999px;
+      padding: 8px 16px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: background-color 0.2s ease, transform 0.18s ease;
+    }
+
+    .cart-btn:hover {
+      background-color: #1f2937;
+      transform: translateY(-1px);
+    }
+
+    .cart-count {
+      background-color: #10b981;
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
     }
 
     .container {
@@ -88,6 +136,14 @@
       font-weight: 600;
     }
 
+    .image-placeholder svg {
+      transition: transform 0.3s ease;
+    }
+
+    .image-placeholder:hover svg {
+      transform: scale(1.06);
+    }
+
     .id-badge {
       display: inline-block;
       background-color: #ecfdf5;
@@ -117,13 +173,13 @@
       font-size: 1.6rem;
       font-weight: 800;
       color: #059669;
-      margin: 16px 0;
+      margin: 14px 0;
     }
 
     .sizes {
       display: flex;
       gap: 10px;
-      margin: 10px 0 22px;
+      margin: 8px 0 18px;
     }
 
     .size-btn {
@@ -134,12 +190,62 @@
       padding: 9px 16px;
       font-weight: 700;
       cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .size-btn:hover {
+      border-color: #111827;
     }
 
     .size-btn.active {
       background-color: #111827;
       color: #ffffff;
       border-color: #111827;
+      transform: translateY(-2px);
+    }
+
+    .qty-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 8px 0 22px;
+    }
+
+    .qty-box {
+      display: inline-flex;
+      align-items: center;
+      background-color: #f3f4f6;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .qty-btn {
+      background: none;
+      border: none;
+      width: 36px;
+      height: 36px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      color: #111827;
+    }
+
+    .qty-btn:hover {
+      background-color: #e5e7eb;
+    }
+
+    .qty-val {
+      min-width: 36px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .add-btn {
@@ -152,29 +258,55 @@
       font-size: 0.98rem;
       font-weight: 800;
       cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.18s ease, box-shadow 0.2s ease;
     }
 
     .add-btn:hover {
       background-color: #059669;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .go-cart-link {
+      display: block;
+      text-align: center;
+      width: 100%;
+      background-color: #f3f4f6;
+      color: #111827;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 11px 18px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .go-cart-link:hover {
+      border-color: #111827;
     }
 
     .toast-msg {
       position: fixed;
       bottom: 22px;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, 24px);
       background-color: #111827;
       color: #ffffff;
       border-radius: 999px;
       padding: 11px 22px;
       font-size: 0.88rem;
       font-weight: 700;
-      display: none;
+      opacity: 0;
+      pointer-events: none;
       z-index: 100;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+      transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .toast-msg.open {
-      display: block;
+      opacity: 1;
+      transform: translate(-50%, 0);
     }
 
     @media (max-width: 680px) {
@@ -189,21 +321,22 @@
 
   <header class="topbar">
     <a href="index.html" class="brand">Essence Vault</a>
-    <a href="index.html" class="back-btn">&larr; Volver al inicio</a>
+    <div class="nav-actions">
+      <a href="carrito.html" class="cart-btn">
+        Mi carrito 🛒
+        <span id="cartBadge" class="cart-count">0</span>
+      </a>
+      <a href="index.html" class="back-btn">&larr; Inicio</a>
+    </div>
   </header>
 
-  <main class="container">
+  <main class="container fade-up">
     <div id="productContainer" class="product-panel"></div>
   </main>
 
-  <div id="toastMsg" class="toast-msg">Agregado a Mis pedidos</div>
+  <div id="toastMsg" class="toast-msg">Agregado a Mi carrito</div>
 
   <script>
-    document.body.style.opacity = "0.2";
-    window.requestAnimationFrame(() => {
-      document.body.style.opacity = "1";
-    });
-
     const catalog = {
       1: {
         id: 1,
@@ -220,8 +353,16 @@
     const product = catalog[productId];
     const container = document.getElementById("productContainer");
     const toastMsg = document.getElementById("toastMsg");
+    const cartBadge = document.getElementById("cartBadge");
 
     let selectedSize = "M";
+    let quantity = 1;
+
+    function refreshCartBadge() {
+      const cart = JSON.parse(localStorage.getItem("essence_cart") || "[]");
+      const totalQty = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+      cartBadge.textContent = totalQty;
+    }
 
     if (!product) {
       container.innerHTML = `
@@ -257,9 +398,25 @@
             </div>
           </div>
 
-          <button type="button" class="add-btn" id="addToOrdersBtn">
-            Agregar a Mis pedidos
-          </button>
+          <div>
+            <strong style="font-size: 0.88rem;">Cantidad:</strong>
+            <div class="qty-row">
+              <div class="qty-box">
+                <button type="button" class="qty-btn" id="decQty">&minus;</button>
+                <span class="qty-val" id="qtyDisplay">1</span>
+                <button type="button" class="qty-btn" id="incQty">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-group">
+            <button type="button" class="add-btn" id="addToCartBtn">
+              Agregar a Mi carrito 🛒
+            </button>
+            <a href="carrito.html" class="go-cart-link">
+              Ver Mi carrito 🛒
+            </a>
+          </div>
         </div>
       `;
 
@@ -271,21 +428,50 @@
         });
       });
 
-      document.getElementById("addToOrdersBtn").addEventListener("click", () => {
-        const orders = JSON.parse(localStorage.getItem("essence_orders") || "[]");
-        orders.push({
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          size: selectedSize
-        });
-        localStorage.setItem("essence_orders", JSON.stringify(orders));
+      const qtyDisplay = document.getElementById("qtyDisplay");
+      document.getElementById("decQty").addEventListener("click", () => {
+        if (quantity > 1) {
+          quantity -= 1;
+          qtyDisplay.textContent = quantity;
+        }
+      });
 
-        toastMsg.textContent = `Agregado: ${product.name} (${selectedSize}) — ${product.priceLabel}`;
+      document.getElementById("incQty").addEventListener("click", () => {
+        quantity += 1;
+        qtyDisplay.textContent = quantity;
+      });
+
+      document.getElementById("addToCartBtn").addEventListener("click", () => {
+        const cart = JSON.parse(localStorage.getItem("essence_cart") || "[]");
+        const existingIndex = cart.findIndex(
+          (item) => item.id === product.id && item.size === selectedSize
+        );
+
+        if (existingIndex > -1) {
+          cart[existingIndex].qty += quantity;
+        } else {
+          cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            size: selectedSize,
+            qty: quantity
+          });
+        }
+
+        localStorage.setItem("essence_cart", JSON.stringify(cart));
+        refreshCartBadge();
+
+        toastMsg.textContent = `Agregado: ${quantity}x ${product.name} (${selectedSize})`;
         toastMsg.classList.add("open");
         setTimeout(() => toastMsg.classList.remove("open"), 2600);
       });
     }
+
+    refreshCartBadge();
+    setTimeout(() => {
+      document.querySelectorAll(".fade-up").forEach((el) => el.classList.add("visible"));
+    }, 60);
   </script>
 </body>
 </html>
