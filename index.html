@@ -424,7 +424,7 @@
   </section>
 
   <div id="welcomeBar" class="welcome-bar">
-    Bienvenido a Essence Vault! @Usuario
+    ¡Bienvenido!
   </div>
 
   <main class="featured-wrapper">
@@ -506,18 +506,31 @@
     tickTimer();
     setInterval(tickTimer, 1000);
 
-    const activeSession = safeReadJSON("essence_active_session", null);
     const welcomeBar = document.getElementById("welcomeBar");
-    if (activeSession && activeSession.username) {
-      welcomeBar.textContent = `Bienvenido a Essence Vault! @${activeSession.username}`;
+    const goAccountOrLoginBtn = document.getElementById("goAccountOrLoginBtn");
+
+    function refreshSessionUI() {
+      const session = safeReadJSON("essence_active_session", null);
+      if (session && session.username) {
+        const cleanHandle = String(session.username).replace(/^@/, "");
+        welcomeBar.textContent = `Bienvenido a Essence Vault! @${cleanHandle}`;
+        goAccountOrLoginBtn.textContent = "Ir a cuenta.html";
+      } else {
+        welcomeBar.textContent = "¡Bienvenido!";
+        goAccountOrLoginBtn.textContent = "Iniciar sesión / Crear";
+      }
     }
+
+    refreshSessionUI();
+    window.addEventListener("storage", (e) => {
+      if (e.key === "essence_active_session") {
+        refreshSessionUI();
+      }
+    });
 
     const profileBtn = document.getElementById("profileBtn");
     const moreOptionsPopover = document.getElementById("moreOptionsPopover");
-    const goAccountOrLoginBtn = document.getElementById("goAccountOrLoginBtn");
     const goAdminBtn = document.getElementById("goAdminBtn");
-
-    goAccountOrLoginBtn.textContent = activeSession ? "Ir a cuenta.html" : "Iniciar sesión / Crear";
 
     profileBtn.addEventListener("click", (e) => {
       e.stopPropagation();
