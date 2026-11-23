@@ -19,12 +19,8 @@
       background-color: #ffffff;
       color: #000000;
       min-height: 100vh;
-      animation: fadeInPage 0.35s ease;
-    }
-
-    @keyframes fadeInPage {
-      from { opacity: 0.3; }
-      to { opacity: 1; }
+      opacity: 1;
+      transition: opacity 0.35s ease;
     }
 
     .topbar {
@@ -183,7 +179,7 @@
       <div id="adminView" class="admin-card" style="display: none;">
         <div class="admin-header">
           <h1>Gestión de Pedidos (Admin)</h1>
-          <p style="font-size:0.86rem; color:#4b5563;">Cambia el estado de cada pedido: Procesando, Preparando o Enviado.</p>
+          <p style="font-size:0.86rem; color:#4b5563;">Cambia el estado de cada pedido: Procesando, Preparando, Enviado o Entregado.</p>
         </div>
         <div id="adminOrdersList"></div>
         <div id="savedNote" class="saved-note"></div>
@@ -203,7 +199,12 @@
     const savedNote = document.getElementById("savedNote");
 
     function renderAdminOrders() {
-      const orders = JSON.parse(localStorage.getItem("essence_orders") || "[]");
+      let orders = [];
+      try {
+        orders = JSON.parse(localStorage.getItem("essence_orders") || "[]");
+      } catch (_) {
+        orders = [];
+      }
 
       if (!orders.length) {
         adminOrdersList.innerHTML = `<p style="margin-top:16px; font-size:0.9rem;">No hay pedidos registrados por el momento.</p>`;
@@ -227,6 +228,7 @@
                   <option value="Procesando" ${currentStatus === "Procesando" ? "selected" : ""}>Procesando</option>
                   <option value="Preparando" ${currentStatus === "Preparando" ? "selected" : ""}>Preparando</option>
                   <option value="Enviado" ${currentStatus === "Enviado" ? "selected" : ""}>Enviado</option>
+                  <option value="Entregado" ${currentStatus === "Entregado" ? "selected" : ""}>Entregado</option>
                 </select>
               </div>
             </div>
@@ -237,7 +239,12 @@
       document.querySelectorAll(".status-select").forEach((sel) => {
         sel.addEventListener("change", () => {
           const idx = Number(sel.dataset.index);
-          const updated = JSON.parse(localStorage.getItem("essence_orders") || "[]");
+          let updated = [];
+          try {
+            updated = JSON.parse(localStorage.getItem("essence_orders") || "[]");
+          } catch (_) {
+            updated = [];
+          }
           if (updated[idx]) {
             updated[idx].status = sel.value;
             localStorage.setItem("essence_orders", JSON.stringify(updated));
