@@ -19,12 +19,8 @@
       background-color: #ffffff;
       color: #000000;
       min-height: 100vh;
-      animation: fadeInPage 0.35s ease;
-    }
-
-    @keyframes fadeInPage {
-      from { opacity: 0.3; }
-      to { opacity: 1; }
+      opacity: 1;
+      transition: opacity 0.35s ease;
     }
 
     .topbar {
@@ -132,7 +128,8 @@
       background-color: #bae6fd;
     }
 
-    .status-badge.enviado {
+    .status-badge.enviado,
+    .status-badge.entregado {
       background-color: #86efac;
     }
 
@@ -143,17 +140,10 @@
       margin: 8px 0 10px;
     }
 
-    .dots {
+    .dynamic-dots {
       display: inline-block;
       width: 24px;
       text-align: left;
-      animation: blinkDots 1.2s infinite steps(4, end);
-    }
-
-    @keyframes blinkDots {
-      0%, 20% { content: ""; opacity: 0.2; }
-      40% { opacity: 0.6; }
-      60%, 100% { opacity: 1; }
     }
 
     .order-meta {
@@ -204,13 +194,22 @@
     const ordersContainer = document.getElementById("ordersContainer");
     let dotStep = 0;
 
+    function safeReadOrders() {
+      try {
+        const raw = localStorage.getItem("essence_orders");
+        return raw ? JSON.parse(raw) : [];
+      } catch (_) {
+        return [];
+      }
+    }
+
     function getDotsText() {
       const states = ["", ".", "..", "..."];
       return states[dotStep % states.length];
     }
 
     function renderOrders() {
-      const orders = JSON.parse(localStorage.getItem("essence_orders") || "[]");
+      const orders = safeReadOrders();
 
       if (!orders.length) {
         ordersContainer.innerHTML = `
@@ -226,12 +225,15 @@
         .map((order, idx) => {
           const status = order.status || "Procesando";
           const normalized = status.toLowerCase();
-          const badgeClass =
-            normalized === "enviado"
-              ? "status-badge enviado"
-              : normalized === "preparando"
-              ? "status-badge preparando"
-              : "status-badge";
+
+          let badgeClass = "status-badge";
+          if (normalized === "preparando") {
+            badgeClass = "status-badge preparando";
+          } else if (normalized === "enviado") {
+            badgeClass = "status-badge enviado";
+          } else if (normalized === "entregado") {
+            badgeClass = "status-badge entregado";
+          }
 
           const processingBanner =
             normalized === "procesando"
@@ -259,7 +261,6 @@
 
     renderOrders();
 
-    // Puntos suspensivos apareciendo y desapareciendo mientras haya pedidos en "Procesando"
     setInterval(() => {
       dotStep = (dotStep + 1) % 4;
       document.querySelectorAll(".dynamic-dots").forEach((el) => {
@@ -267,7 +268,6 @@
       });
     }, 450);
 
-    // Sincronizar si cambia el estado desde otra pestaña (admin.html)
     window.addEventListener("storage", (e) => {
       if (e.key === "essence_orders") {
         renderOrders();
